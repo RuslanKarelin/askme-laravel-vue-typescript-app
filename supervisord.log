@@ -1,0 +1,40 @@
+2022-07-07 12:42:56,940 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2022-07-07 12:42:56,942 INFO supervisord started with pid 1
+2022-07-07 12:42:57,945 INFO spawned: 'laravel-worker_00' with pid 9
+2022-07-07 12:42:57,948 INFO spawned: 'laravel-worker_01' with pid 10
+2022-07-07 12:42:57,950 INFO spawned: 'laravel-worker_02' with pid 11
+2022-07-07 12:42:57,953 INFO spawned: 'laravel-worker_03' with pid 12
+2022-07-07 12:42:57,954 INFO spawned: 'laravel-worker_04' with pid 13
+2022-07-07 12:42:57,956 INFO spawned: 'laravel-worker_05' with pid 14
+2022-07-07 12:42:57,958 INFO spawned: 'laravel-worker_06' with pid 15
+2022-07-07 12:42:57,960 INFO spawned: 'laravel-worker_07' with pid 16
+2022-07-07 12:42:57,965 INFO spawned: 'php-fpm_00' with pid 17
+2022-07-07 12:42:58,031 INFO success: php-fpm_00 entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_05 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_06 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:42:59,035 INFO success: laravel-worker_07 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:49:59,086 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2022-07-07 12:49:59,088 INFO supervisord started with pid 1
+2022-07-07 12:50:00,091 INFO spawned: 'laravel-worker_00' with pid 7
+2022-07-07 12:50:00,093 INFO spawned: 'laravel-worker_01' with pid 8
+2022-07-07 12:50:00,096 INFO spawned: 'laravel-worker_02' with pid 9
+2022-07-07 12:50:00,098 INFO spawned: 'laravel-worker_03' with pid 10
+2022-07-07 12:50:00,101 INFO spawned: 'laravel-worker_04' with pid 11
+2022-07-07 12:50:00,104 INFO spawned: 'laravel-worker_05' with pid 12
+2022-07-07 12:50:00,108 INFO spawned: 'laravel-worker_06' with pid 13
+2022-07-07 12:50:00,110 INFO spawned: 'laravel-worker_07' with pid 14
+2022-07-07 12:50:00,114 INFO spawned: 'php-fpm_00' with pid 15
+2022-07-07 12:50:00,191 INFO success: php-fpm_00 entered RUNNING state, process has stayed up for > than 0 seconds (startsecs)
+2022-07-07 12:50:01,198 INFO success: laravel-worker_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:50:01,198 INFO success: laravel-worker_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:50:01,198 INFO success: laravel-worker_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:50:01,199 INFO success: laravel-worker_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:50:01,199 INFO success: laravel-worker_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:50:01,199 INFO success: laravel-worker_05 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:50:01,199 INFO success: laravel-worker_06 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2022-07-07 12:50:01,199 INFO success: laravel-worker_07 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)

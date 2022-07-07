@@ -1,0 +1,9 @@
+<template>
+  <div class="card">Hello World.</div>
+</template>
+
+<script>
+  export default {
+   
+  };
+</script>

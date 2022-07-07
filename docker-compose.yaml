@@ -1,0 +1,71 @@
+version: '3.7'
+
+networks:
+  askme:
+    driver: bridge
+    name: askme_network
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: web_askme
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/askme
+    depends_on:
+      - php
+    networks:
+      - askme
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: php_fpm_askme
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/var/www/askme
+    ports:
+      - "9000:9000"
+    networks:
+      - askme
+  db:
+    image: mysql
+    container_name: db_askme
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3307:3306
+    volumes:
+      - ./data/mysql/datadir:/var/lib/mysql
+    env_file:
+      - ./.env
+    networks:
+      - askme
+  adminer:
+    image: adminer
+    container_name: adminer_askme
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - askme
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    container_name: mailhog_askme
+    ports:
+        - '${FORWARD_MAILHOG_PORT:-1025}:1025'
+        - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+    networks:
+      - askme
+  redis:
+    image: redis:latest
+    container_name: redis_askme
+    ports:
+      - "63791:6379"
+    networks:
+      - askme
