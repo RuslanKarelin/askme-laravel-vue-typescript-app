@@ -39,7 +39,9 @@ RUN docker-php-ext-configure bcmath && \
         docker-php-ext-install \
             curl \
             xml \
-            zip
+            mysqli \
+            pdo_mysql \
+            zip && docker-php-ext-enable mysqli
 
 RUN pecl channel-update pecl.php.net
 
