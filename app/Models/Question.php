@@ -9,6 +9,12 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'detail',
+        'status_id'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -21,12 +27,12 @@ class Question extends Model
 
     public function state()
     {
-        return $this->hasOne(QuestionState::class, 'id');
+        return $this->hasOne(QuestionState::class);
     }
 
     public function status()
     {
-        return $this->hasOne(QuestionStatus::class, 'id');
+        return $this->hasOne(QuestionStatus::class, 'id', 'status_id');
     }
 
     public function tags()

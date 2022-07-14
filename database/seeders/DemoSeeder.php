@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Storage;
 
 class DemoSeeder extends Seeder
 {
@@ -35,13 +36,21 @@ class DemoSeeder extends Seeder
     private function createUsers() : Collection
     {
         $users = User::factory(static::COUNT_USERS)
-            ->hasProfile(1)
+            ->hasProfile()
             ->has(
                 Question::factory()
                     ->hasTags(static::COUNT_TAGS)
+                    ->hasState()
                     ->count(static::COUNT_QUESTIONS)
             )
             ->create();
+
+        foreach ($users as $user) {
+            Storage::disk('public')->copy(
+                config('storage.avatars').'avatar.png',
+                config('storage.avatars').$user->id.'/avatar.png'
+            );
+        }
 
         $userRole = Role::select('id')->where('title', 'User')->first()?->id;
         if ($userRole) {

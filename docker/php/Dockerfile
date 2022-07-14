@@ -41,14 +41,17 @@ RUN docker-php-ext-configure bcmath && \
             xml \
             mysqli \
             pdo_mysql \
-            zip && docker-php-ext-enable mysqli
+            zip \
+            && docker-php-ext-enable mysqli
+
+RUN apt-get update && apt-get install -y \
+		libfreetype6-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
+	&& docker-php-ext-install -j$(nproc) gd
 
 RUN pecl channel-update pecl.php.net
-
-# PHPUnit for testing our code.
-#RUN wget https://phar.phpunit.de/phpunit.phar
-#RUN chmod +x phpunit.phar
-#RUN mv phpunit.phar /usr/local/bin/phpunit
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

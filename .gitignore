@@ -5,6 +5,7 @@
 /storage/*.key
 /vendor
 /data
+/data_test
 .env
 .env.backup
 .phpunit.result.cache

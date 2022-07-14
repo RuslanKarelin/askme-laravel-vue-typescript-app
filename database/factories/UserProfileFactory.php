@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserProfile>
@@ -19,7 +20,7 @@ class UserProfileFactory extends Factory
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
-            'avatar' => fake()->imageUrl(100, 100),
+            'avatar' => 'avatar.png',
             'about' => fake()->realTextBetween(50, 100)
         ];
     }

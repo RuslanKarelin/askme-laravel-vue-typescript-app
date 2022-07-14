@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('detail');
             $table->foreignId('status_id')->references('id')->on('question_statuses');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('state_id')->references('id')->on('question_states')->onDelete('cascade');
             $table->timestamps();
         });
     }

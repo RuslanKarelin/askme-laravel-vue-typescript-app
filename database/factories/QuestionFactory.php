@@ -34,8 +34,7 @@ class QuestionFactory extends Factory
         return [
             'title' => fake()->realText(50),
             'detail' => fake()->realTextBetween(50, 100),
-            'status_id' => $questionStatuses->pluck('id')->random(1)->first(),
-            'state_id' => QuestionState::factory()
+            'status_id' => $questionStatuses->pluck('id')->random(1)->first()
         ];
     }
 }

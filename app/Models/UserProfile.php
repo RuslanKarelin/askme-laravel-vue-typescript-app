@@ -20,4 +20,10 @@ class UserProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function fullName(): string
+    {
+        $name = $this->first_name . ' ' . $this->last_name;
+        return !empty(trim($name)) ? $name : 'unnamed';
+    }
 }

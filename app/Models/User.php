@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Builder;
+use App\Enums\Roles;
 
 class User extends Authenticatable
 {
@@ -75,5 +77,12 @@ class User extends Authenticatable
     public function question_likes()
     {
         return $this->belongsToMany(Question::class, 'question_like', 'user_id', 'question_id');
+    }
+
+    public function isAdministrator()
+    {
+        return $this->roles()->where(function (Builder $query) {
+            return $query->where('title', Roles::Admin);
+        })->limit(1)->get()->isNotEmpty();
     }
 }

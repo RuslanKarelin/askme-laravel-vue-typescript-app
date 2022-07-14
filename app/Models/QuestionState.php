@@ -11,6 +11,6 @@ class QuestionState extends Model
 
     public function question()
     {
-        return $this->belongsTo(Question::class, 'id', 'state_id');
+        return $this->belongsTo(Question::class, 'question_id', 'id');
     }
 }
