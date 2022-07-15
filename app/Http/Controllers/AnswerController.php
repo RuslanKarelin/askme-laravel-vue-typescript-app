@@ -8,60 +8,52 @@ use App\Models\Question;
 use App\Models\Answer;
 use App\Http\Resources\AnswerResource;
 use Illuminate\Http\Response;
+use App\Contracts\Services\IAnswerService;
+use App\Contracts\Helpers\Response\IResponseHelper;
 
 class AnswerController extends Controller
 {
+    public function __construct(
+        private IAnswerService $answerService,
+        private IResponseHelper $responseHelper
+    ){}
+
     public function store(AnswerRequest $request, Question $question)
     {
-        $answer = $question->answers()->create(
-            array_merge(
-                $request->validated(),
-                ['user_id' => $request->user()->id]
-            )
-        );
-
-        return response()->json(
-            [
-                'data' => new AnswerResource($answer),
-                'status' => true
-            ], Response::HTTP_CREATED
-        );
+        try{
+            $answer = $this->answerService->store($request, $question);
+            return $this->responseHelper->json(Response::HTTP_CREATED, new AnswerResource($answer));
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+        }
     }
 
     public function update(AnswerRequest $request, Question $question, Answer $answer)
     {
-        $answer->updateOrFail($request->validated());
-
-        return response()->json(
-            [
-                'data' => new AnswerResource($answer),
-                'status' => true
-            ], Response::HTTP_OK
-        );
+        try{
+            $answer = $this->answerService->update($request, $answer);
+            return $this->responseHelper->json(Response::HTTP_OK, new AnswerResource($answer));
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+        }
     }
 
     public function destroy(Request $request, Question $question, Answer $answer)
     {
-        $answer->delete();
-
-        return response()->json(status: Response::HTTP_NO_CONTENT);
+        try{
+            $this->answerService->destroy($answer);
+            return $this->responseHelper->json(Response::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+        }
     }
 
     public function addLike(Request $request, Answer $answer)
     {
-        $userId = $request->user()->id;
-        if ($answer->likes()->where('user_id', $userId)->count()) {
-            $answer->likes()->detach([$userId]);
-            return response()->json(status: Response::HTTP_NO_CONTENT);
+        try{
+            return $this->answerService->addLike($request, $answer);
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
         }
-
-        $answer->likes()->attach([$userId]);
-
-        return response()->json(
-            [
-                'status' => true
-            ], Response::HTTP_CREATED
-        );
-
     }
 }

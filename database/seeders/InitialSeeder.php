@@ -10,11 +10,18 @@ use App\Models\QuestionStatus;
 use Illuminate\Support\Facades\Hash;
 use App\Enums\QuestionStatuses;
 use App\Enums\Roles;
-use Illuminate\Support\Facades\Storage;
+use App\Contracts\Services\IFileService;
 
 class InitialSeeder extends Seeder
 {
     use WithoutModelEvents;
+
+    private $fileService;
+
+    public function __construct()
+    {
+        $this->fileService = app(IFileService::class);
+    }
 
     private function createQuestionStatuses(): static
     {
@@ -46,7 +53,7 @@ class InitialSeeder extends Seeder
                 'password' => Hash::make('11111111')
             ]);
 
-        Storage::disk('public')->copy(
+        $this->fileService->copy(
             config('storage.avatars').'admin.jpeg',
             config('storage.avatars').$adminUser->id.'/admin.jpeg'
         );

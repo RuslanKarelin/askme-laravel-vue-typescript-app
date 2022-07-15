@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Image;
-use Illuminate\Support\Facades\Storage;
+use App\Contracts\Services\IUserService;
 
 class UserController extends Controller
 {
+    public function __construct(
+        private IUserService $userService
+    ){}
+
     public function show(User $user)
     {
         //
@@ -23,37 +25,13 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
-        DB::transaction(function() use ($request, $user) {
-            $user->updateOrFail($request->validated());
-
-            if ($request->has('profile')) {
-                $profileFields = $request->get('profile');
-                unset($profileFields['avatar']);
-                if ($request->hasFile('profile.avatar') && !empty($request->file('profile.avatar'))) {
-                    $file = $request->file('profile.avatar');
-                    $filename = $file->hashName();
-                    $image = Image::make($file)->resize(70, 70, function ($const) {
-                        $const->aspectRatio();
-                    });
-                    //Storage::disk('public')->put(config('storage.avatars').$user->id.'/'.$filename, $image);
-                    Storage::put(config('storage.avatars').$user->id.'/'.$filename, $image);
-                    $profileFields['avatar'] = $filename;
-                }
-
-                $user->profile()->update($profileFields);
-            }
-        }, 3);
-
+        $user = $this->userService->updateUser($request, $user);
         return response()->redirectToRoute('users.profile.edit', ['user' => $user->id]);
     }
 
     public function destroy(Request $request, User $user)
     {
-        $userId =  $user->id;
-        if ($user->delete()) {
-            Storage::delete(config('storage.avatars').$userId);
-        }
-
+        $this->userService->destroyUser($user);
         return response()->redirectToRoute('home');
     }
 }

@@ -9,8 +9,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use App\Contracts\Services\IUserService;
 
 
 class RegisterController extends Controller
@@ -28,6 +27,8 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+    private $userService;
+
     /**
      * Where to redirect users after registration.
      *
@@ -42,6 +43,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        $this->userService = app(IUserService::class);
         $this->middleware('guest');
     }
 
@@ -68,20 +70,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = null;
-        DB::transaction(function () use (&$user, $data) {
-            $user = User::create([
-                'login' => $data['login'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-            ]);
-            $user->profile()->create(['avatar' => 'avatar.png']);
-            Storage::disk('public')->copy(
-                config('storage.avatars').'avatar.png',
-                config('storage.avatars').$user->id.'/avatar.png'
-            );
-        }, 3);
-
-        return $user;
+        return $this->userService->creatingUserDuringRegistration($data);
     }
 }

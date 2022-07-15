@@ -10,7 +10,7 @@ use App\Models\Role;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\Comment;
-use Illuminate\Support\Facades\Storage;
+use App\Contracts\Services\IFileService;
 
 class DemoSeeder extends Seeder
 {
@@ -23,6 +23,13 @@ class DemoSeeder extends Seeder
     const COUNT_TAGS = 1;
 
     private static $questions;
+
+    private $fileService;
+
+    public function __construct()
+    {
+        $this->fileService = app(IFileService::class);
+    }
 
     private static function getQuestions(): Collection
     {
@@ -46,7 +53,7 @@ class DemoSeeder extends Seeder
             ->create();
 
         foreach ($users as $user) {
-            Storage::disk('public')->copy(
+            $this->fileService->copy(
                 config('storage.avatars').'avatar.png',
                 config('storage.avatars').$user->id.'/avatar.png'
             );

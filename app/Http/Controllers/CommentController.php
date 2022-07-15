@@ -8,42 +8,43 @@ use App\Models\Answer;
 use App\Models\Comment;
 use App\Http\Resources\CommentResource;
 use Illuminate\Http\Response;
+use App\Contracts\Services\ICommentService;
+use App\Contracts\Helpers\Response\IResponseHelper;
 
 class CommentController extends Controller
 {
+    public function __construct(
+        private ICommentService $commentService,
+        private IResponseHelper $responseHelper
+    ){}
+
     public function store(CommentRequest $request, Answer $answer)
     {
-        $comment = $answer->comments()->create(
-            array_merge(
-                $request->validated(),
-                ['user_id' => $request->user()->id]
-            )
-        );
-
-        return response()->json(
-            [
-                'data' => new CommentResource($comment),
-                'status' => true
-            ], Response::HTTP_CREATED
-        );
+        try{
+            $comment = $this->commentService->store($request, $answer);
+            return $this->responseHelper->json(Response::HTTP_CREATED, new CommentResource($comment));
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+        }
     }
 
     public function update(CommentRequest $request, Answer $answer, Comment $comment)
     {
-        $comment->updateOrFail($request->validated());
-
-        return response()->json(
-            [
-                'data' => new CommentResource($comment),
-                'status' => true
-            ], Response::HTTP_OK
-        );
+        try{
+            $comment = $this->commentService->update($request, $comment);
+            return $this->responseHelper->json(Response::HTTP_OK, new CommentResource($comment));
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+        }
     }
 
     public function destroy(Request $request, Answer $answer, Comment $comment)
     {
-        $comment->delete();
-
-        return response()->json(status: Response::HTTP_NO_CONTENT);
+        try{
+            $this->commentService->destroy($comment);
+            return $this->responseHelper->json(Response::HTTP_NO_CONTENT);
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+        }
     }
 }

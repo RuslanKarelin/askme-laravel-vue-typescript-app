@@ -3,6 +3,18 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\UserService;
+use App\Contracts\Services\IUserService;
+use App\Services\FileService;
+use App\Contracts\Services\IFileService;
+use App\Services\QuestionService;
+use App\Contracts\Services\IQuestionService;
+use App\Services\AnswerService;
+use App\Contracts\Services\IAnswerService;
+use App\Services\CommentService;
+use App\Contracts\Services\ICommentService;
+use App\Contracts\Helpers\Response\IResponseHelper;
+use App\Helpers\Response\ResponseHelper;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +35,28 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind(IUserService::class, function ($app) {
+            return new UserService();
+        });
+
+        $this->app->bind(IFileService::class, function ($app) {
+            return new FileService();
+        });
+
+        $this->app->bind(IQuestionService::class, function ($app) {
+            return new QuestionService();
+        });
+
+        $this->app->bind(IAnswerService::class, function ($app) {
+            return new AnswerService();
+        });
+
+        $this->app->bind(ICommentService::class, function ($app) {
+            return new CommentService();
+        });
+
+        $this->app->bind(IResponseHelper::class, function ($app) {
+            return new ResponseHelper();
+        });
     }
 }
