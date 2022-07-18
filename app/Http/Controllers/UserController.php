@@ -13,14 +13,14 @@ class UserController extends Controller
         private IUserService $userService
     ){}
 
-    public function show(User $user)
+    public function show(Request $request, User $user)
     {
-        //
+        return $this->userService->show($request, $user)->view();
     }
 
     public function edit(Request $request, User $user)
     {
-
+        return $this->userService->edit($request, $user)->view();
     }
 
     public function update(UserRequest $request, User $user)

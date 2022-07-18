@@ -139,7 +139,7 @@ class QuestionTest extends TestCase
             [
                 'title' => 'test',
                 'detail' => 'test',
-                'tags' => ['php', 'js', 'ruby']
+                'tags' => 'php,js,ruby'
             ]
         );
         $this->assertDatabaseHas('questions', ['title' => 'test', 'detail' => 'test']);
@@ -160,7 +160,7 @@ class QuestionTest extends TestCase
             [
                 'title' => 'test',
                 'detail' => 'test',
-                'tags' => ['php', 'python']
+                'tags' => 'php,python'
             ]
         );
         $this->assertDatabaseCount('tags', 2);

@@ -5,11 +5,11 @@
 @endsection
 
 @section('after-header-block')
-    @include('themes.askme.partials.after-header-block', ['title' => 'Show'])
+    @include('themes.askme.partials.after-header-block', ['title' => $question->title])
 @endsection
 
 @section('content')
-    Single {{$question->title}}
+    @include('themes.askme.pages.questions.partials.show')
 @endsection
 
 @section('sidebar')

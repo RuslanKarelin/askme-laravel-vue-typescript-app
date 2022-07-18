@@ -757,7 +757,7 @@ jQuery(document).ready(function($) {
 		jQuery(".poll_1").slideUp("500");
 		return false;
 	});
-	
+
 	/* Login panel */
 	
 	jQuery("#login-panel").click(function () {
@@ -778,12 +778,17 @@ jQuery(document).ready(function($) {
 	/* Signup */
 	
 	jQuery(".signup,.login-links-r a").click(function () {
+		showRegisterPopup();
+		return false;
+	});
+
+	function showRegisterPopup()
+	{
 		jQuery(".panel-pop").animate({"top":"-100%"},10).hide();
 		jQuery("#signup").show().animate({"top":"50%"},500);
 		jQuery("body").prepend("<div class='wrap-pop'></div>");
 		wrap_pop();
-		return false;
-	});
+	}
 	
 	/* Lost password */
 	
@@ -914,7 +919,7 @@ jQuery(document).ready(function($) {
 		
 		/* Login panel slideup */
 		
-		jQuery(".login-panel").slideUp(500);
+		jQuery(".login-panel").slideUp(0);
 		
 		/* Carousel */
 		
@@ -1070,5 +1075,23 @@ jQuery(document).ready(function($) {
 		},
 		itemTemplate: '<a href="{{link}}" title="{{title}}" target="_blank"><img src="{{image_m}}" alt="{{title}}"></a>'
 	});
-	
+
+	if (jQuery('#signup').find('[data-showRegisterForm=1]').length) {
+		showRegisterPopup();
+		return false;
+	}
+
+	if (
+		!jQuery('body').find('.login-page').length &&
+		jQuery('.login-panel').find('[data-slideLoginPanel=1]').length
+	) {
+		setTimeout(function(){
+			jQuery("#login-panel").removeClass("header-top-active");
+			jQuery("#login-panel").click();
+		}, 300)
+	}
+
+	jQuery('#main-search-submit').click(function() {
+		jQuery(this).closest('form').submit();
+	});
 });

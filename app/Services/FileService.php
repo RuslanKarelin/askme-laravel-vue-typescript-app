@@ -19,8 +19,8 @@ class FileService implements IFileService
             $image = Image::make($file)->resize(70, 70, function ($const) {
                 $const->aspectRatio();
             });
-            //Storage::disk('public')->put(config('storage.avatars').$user->id.'/'.$filename, $image);
-            Storage::put(config('storage.avatars').$user->id.'/'.$filename, $image);
+            $this->delete(config('storage.avatars').$user->id.'/'.$user->profile->avatar);
+            Storage::disk('public')->put(config('storage.avatars').$user->id.'/'.$filename, $image->encode());
             return $file;
         }
 
@@ -29,7 +29,7 @@ class FileService implements IFileService
 
     public function delete(array|string $path): bool
     {
-        return Storage::delete($path);
+        return Storage::disk('public')->delete($path);
     }
 
     public function copy(string $from, string $to): bool

@@ -21,8 +21,8 @@ class QuestionService implements IQuestionService
 
     private function addTags(Request $request, Question $question)
     {
-        if ($request->has('tags')) {
-            $tagsFromRequest = $request->get('tags');
+        if ($request->has('tags') && !empty($request->get('tags'))) {
+            $tagsFromRequest = explode(',', $request->get('tags'));
             $tags = Tag::select('id', 'title')->whereIn('title', $tagsFromRequest)->get();
             $nonExistingTags = collect($tagsFromRequest)->diff($tags->pluck('title'))->values()->toArray();
             Tag::insert(
@@ -62,7 +62,10 @@ class QuestionService implements IQuestionService
 
     public function edit(Request $request, Question $question): IResponseHelper
     {
-        return $this->responseHelper->setViewData('themes.askme.pages.questions.edit', ['question' => $question]);
+        return $this->responseHelper->setViewData('themes.askme.pages.questions.edit', [
+            'question' => $question,
+            'tags' => implode(',', $question->tags->pluck('title')->toArray())
+        ]);
     }
 
     public function update(Request $request, Question $question): Question
@@ -74,7 +77,9 @@ class QuestionService implements IQuestionService
 
     public function show(Request $request, Question $question): IResponseHelper
     {
-        return $this->responseHelper->setViewData('themes.askme.pages.questions.show', ['question' => $question]);
+        return $this->responseHelper->setViewData('themes.askme.pages.questions.show', [
+            'question' => $question->load(['status', 'state', 'user.profile', 'tags'])->loadCount(['likes', 'answers'])
+        ]);
     }
 
     public function destroy(Question $question): bool
@@ -98,5 +103,10 @@ class QuestionService implements IQuestionService
 
         $question->likes()->attach([$userId]);
         return $this->responseHelper->json(Response::HTTP_CREATED);
+    }
+
+    public function getWithRelationship(array $relations = [], string $orderBy = 'id', string $direction = 'asc')
+    {
+        return Question::with($relations)->orderBy($orderBy, $direction);
     }
 }

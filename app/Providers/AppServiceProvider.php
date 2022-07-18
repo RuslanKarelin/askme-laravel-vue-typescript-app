@@ -13,6 +13,10 @@ use App\Services\AnswerService;
 use App\Contracts\Services\IAnswerService;
 use App\Services\CommentService;
 use App\Contracts\Services\ICommentService;
+use App\Services\SearchService;
+use App\Contracts\Services\ISearchService;
+use App\Services\StatisticService;
+use App\Contracts\Services\IStatisticService;
 use App\Contracts\Helpers\Response\IResponseHelper;
 use App\Helpers\Response\ResponseHelper;
 
@@ -57,6 +61,14 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(IResponseHelper::class, function ($app) {
             return new ResponseHelper();
+        });
+
+        $this->app->bind(IStatisticService::class, function ($app) {
+            return new StatisticService();
+        });
+
+        $this->app->bind(ISearchService::class, function ($app) {
+            return new SearchService();
         });
     }
 }

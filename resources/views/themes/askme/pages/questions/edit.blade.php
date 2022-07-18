@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    Edit {{$question->title}}
+    @include('themes.askme.pages.questions.partials.forms.edit-form')
 @endsection
 
 @section('sidebar')

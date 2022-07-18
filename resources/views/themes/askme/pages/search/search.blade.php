@@ -1,15 +1,15 @@
 @extends('layouts.askme')
 
 @section('title')
-    Create
+    'Search by: '.$searchQuery
 @endsection
 
 @section('after-header-block')
-    @include('themes.askme.partials.after-header-block', ['title' => 'Create'])
+    @include('themes.askme.partials.after-header-block', ['title' => 'Search by: '.$searchQuery])
 @endsection
 
 @section('content')
-    @include('themes.askme.pages.questions.partials.forms.create-form')
+    @include('themes.askme.pages.search.partials.index')
 @endsection
 
 @section('sidebar')

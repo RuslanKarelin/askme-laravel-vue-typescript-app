@@ -1,15 +1,15 @@
 @extends('layouts.askme')
 
 @section('title')
-    Create
+    User Profile
 @endsection
 
 @section('after-header-block')
-    @include('themes.askme.partials.after-header-block', ['title' => 'Create'])
+    @include('themes.askme.partials.after-header-block', ['title' => 'User Profile'])
 @endsection
 
 @section('content')
-    @include('themes.askme.pages.questions.partials.forms.create-form')
+    @include('themes.askme.pages.user-profile.partials.show')
 @endsection
 
 @section('sidebar')

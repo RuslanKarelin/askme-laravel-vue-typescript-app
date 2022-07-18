@@ -16,11 +16,11 @@
                         <a class="color button dark_button medium" href="#">About Us</a>
                         <a class="color button dark_button medium" href="#">Join Now</a>
                         <div class="clearfix"></div>
-                        <form class="form-style form-style-2">
+                        <form action="{{route('search')}}" class="form-style form-style-2">
                             <p>
-                                <input type="text" id="question_title" value="Ask any question and you be sure find your answer ?" onfocus="if(this.value=='Ask any question and you be sure find your answer ?')this.value='';" onblur="if(this.value=='')this.value='Ask any question and you be sure find your answer ?';">
+                                <input name="query" type="text" id="question_title" value="Ask any question and you be sure find your answer ?" onfocus="if(this.value=='Ask any question and you be sure find your answer ?')this.value='';" onblur="if(this.value=='')this.value='Ask any question and you be sure find your answer ?';" autocomplete="off">
                                 <i class="icon-pencil"></i>
-                                <span class="color button small publish-question">Ask Now</span>
+                                <button id="main-search-submit" type="submit" class="color button small publish-question">Ask Now</button>
                             </p>
                         </form>
                     </div>
