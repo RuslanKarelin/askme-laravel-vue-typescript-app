@@ -17,7 +17,7 @@ class UserProfileResource extends JsonResource
         return [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'avatar' => $this->avatar,
+            'avatar' => asset('storage/'.config('storage.avatars').$this->user->id.'/'.$this->avatar),
             'about' => $this->about,
             'fullName' => $this->fullName(),
         ];

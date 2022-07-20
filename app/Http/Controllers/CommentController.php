@@ -24,7 +24,7 @@ class CommentController extends Controller
             $comment = $this->commentService->store($request, $answer);
             return $this->responseHelper->json(Response::HTTP_CREATED, new CommentResource($comment));
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -34,7 +34,7 @@ class CommentController extends Controller
             $comment = $this->commentService->update($request, $comment);
             return $this->responseHelper->json(Response::HTTP_OK, new CommentResource($comment));
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class CommentController extends Controller
             $this->commentService->destroy($comment);
             return $this->responseHelper->json(Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 }

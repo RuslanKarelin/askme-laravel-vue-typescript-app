@@ -24,7 +24,7 @@ class AnswerController extends Controller
             $answer = $this->answerService->store($request, $question);
             return $this->responseHelper->json(Response::HTTP_CREATED, new AnswerResource($answer));
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -34,7 +34,7 @@ class AnswerController extends Controller
             $answer = $this->answerService->update($request, $answer);
             return $this->responseHelper->json(Response::HTTP_OK, new AnswerResource($answer));
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class AnswerController extends Controller
             $this->answerService->destroy($answer);
             return $this->responseHelper->json(Response::HTTP_NO_CONTENT);
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ class AnswerController extends Controller
         try{
             return $this->answerService->addLike($request, $answer);
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 }

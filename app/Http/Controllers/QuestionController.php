@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuestionResource;
+use App\Http\Resources\QuestionCollection;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Http\Requests\QuestionRequest;
+use Illuminate\Http\Response;
 use App\Contracts\Services\IQuestionService;
 use App\Contracts\Helpers\Response\IResponseHelper;
 
 class QuestionController extends Controller
 {
     public function __construct(
-        private IQuestionService $questionService
+        private IQuestionService $questionService,
+        private IResponseHelper $responseHelper
     ){}
 
     public function create(Request $request)
@@ -53,7 +57,7 @@ class QuestionController extends Controller
         try{
             return $this->questionService->addLike($request, $question);
         } catch (\Exception $e) {
-            return $this->responseHelper->jsonError($e->getMessage(), $e->getCode());
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
 }

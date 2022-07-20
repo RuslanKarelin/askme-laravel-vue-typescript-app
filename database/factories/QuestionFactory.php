@@ -33,7 +33,7 @@ class QuestionFactory extends Factory
         $questionStatuses = static::getQuestionStatuses();
         return [
             'title' => fake()->realText(50),
-            'detail' => fake()->realTextBetween(50, 100),
+            'detail' => fake()->realTextBetween(100, 300),
             'status_id' => $questionStatuses->pluck('id')->random(1)->first()
         ];
     }

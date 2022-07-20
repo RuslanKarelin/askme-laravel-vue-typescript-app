@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 class CommentResource extends JsonResource
 {
@@ -19,7 +20,16 @@ class CommentResource extends JsonResource
             'detail' => $this->detail,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user' => new UserResource($this->user)
+            'user' => new UserResource($this->user),
+            'can' => $this->permissions(),
+        ];
+    }
+
+    protected function permissions(): array
+    {
+        return [
+            'update' => Gate::allows('update', $this->resource),
+            'destroy' => Gate::allows('destroy', $this->resource)
         ];
     }
 }

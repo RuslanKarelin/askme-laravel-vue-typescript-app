@@ -13,11 +13,22 @@ use Illuminate\Http\JsonResponse;
 use App\Contracts\Helpers\Response\IResponseHelper;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Builder;
+use App\Enums\QuestionFilter;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class QuestionService implements IQuestionService
 {
     private $responseHelper;
+    private $withRelations = [
+        'user.profile.user',
+        'user.roles',
+        'user',
+        'tags',
+        'state',
+        'status'
+    ];
 
     private function addTags(Request $request, Question $question)
     {
@@ -35,6 +46,29 @@ class QuestionService implements IQuestionService
         }
     }
 
+    private function recentQuestions(): Builder
+    {
+        return Question::with($this->withRelations)->withCount(['answers'])->orderBy('id', 'desc');
+    }
+
+    private function mostResponses(): Builder
+    {
+        return Question::with($this->withRelations)->withCount(['answers'])->orderBy('answers_count', 'desc');
+    }
+
+    private function recentlyAnswered(): Builder
+    {
+        return Question::with($this->withRelations)->selectRaw('questions.*')
+            ->leftJoin('answers', 'answers.question_id', '=', 'questions.id')
+            ->orderBy('answers.created_at', 'desc')
+            ->withCount(['answers']);
+    }
+
+    private function noAnswers(): Builder
+    {
+        return Question::with($this->withRelations)->withCount(['answers'])->doesntHave('answers');
+    }
+
     public function __construct()
     {
         $this->responseHelper = app(IResponseHelper::class);
@@ -50,9 +84,7 @@ class QuestionService implements IQuestionService
         $question = $request->user()->questions()->create(
             array_merge(
                 $request->validated(),
-                [
-                    'status_id' => QuestionStatus::where('title', QuestionStatuses::Process)->first() ?->id
-                ]
+                ['status_id' => QuestionStatus::where('title', QuestionStatuses::Process)->first() ?->id]
             )
         );
         $question->state()->create();
@@ -105,8 +137,15 @@ class QuestionService implements IQuestionService
         return $this->responseHelper->json(Response::HTTP_CREATED);
     }
 
-    public function getWithRelationship(array $relations = [], string $orderBy = 'id', string $direction = 'asc')
+    public function getList(Request $request): LengthAwarePaginator
     {
-        return Question::with($relations)->orderBy($orderBy, $direction);
+        $builder = match($request->get('filter')){
+            QuestionFilter::recentQuestions->value => $this->recentQuestions(),
+            QuestionFilter::mostResponses->value => $this->mostResponses(),
+            QuestionFilter::recentlyAnswered->value => $this->recentlyAnswered(),
+            QuestionFilter::noAnswers->value => $this->noAnswers(),
+            default => Question::with($this->withRelations)->withCount(['answers'])
+        };
+        return $builder->paginate(config('question.perPage'));
     }
 }

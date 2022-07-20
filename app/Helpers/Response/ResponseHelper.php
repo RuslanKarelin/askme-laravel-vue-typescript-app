@@ -15,10 +15,15 @@ class ResponseHelper implements IResponseHelper
     protected $viewName;
     protected $viewData;
 
-    public function json(int $code, JsonResource|array $data = []): JsonResponse
+    public function json(int $code, JsonResource|array $data = [], bool $collection = false): JsonResponse
     {
         $responseData = ['status' => true];
-        if ($data) $responseData['data'] = $data;
+        if (!$collection && $data) $responseData['data'] = $data;
+
+        if ($collection) {
+            $data['status'] = $responseData['status'];
+            $responseData = $data;
+        }
 
         return match($code){
             Response::HTTP_CREATED, Response::HTTP_OK => response()->json($responseData, $code),

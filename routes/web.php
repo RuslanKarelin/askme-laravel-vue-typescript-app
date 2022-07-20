@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
+//Route::post('questions/query', [QuestionController::class, 'query'])->name('query');
 Route::get('users/{user}/profile', [UserController::class, 'show'])->name('users.profile.show');
 Route::get('search', SearchController::class)->name('search');
 

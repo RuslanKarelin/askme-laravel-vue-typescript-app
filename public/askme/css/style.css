@@ -5275,3 +5275,7 @@ html[xmlns] .slides {
 	margin: 0 0 20px 0 !important;
 	line-height: 22px;
 }
+
+.question-list {
+	position: relative;
+}

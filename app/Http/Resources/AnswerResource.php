@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 class AnswerResource extends JsonResource
 {
@@ -22,6 +23,15 @@ class AnswerResource extends JsonResource
             'user' => new UserResource($this->user),
             'comments' => CommentResource::collection($this->comments),
             'likes_count' => $this->likes()->count(),
+            'can' => $this->permissions(),
+        ];
+    }
+
+    protected function permissions(): array
+    {
+        return [
+            'update' => Gate::allows('update', $this->resource),
+            'destroy' => Gate::allows('destroy', $this->resource)
         ];
     }
 }
