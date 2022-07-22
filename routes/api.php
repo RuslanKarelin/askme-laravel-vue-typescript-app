@@ -18,6 +18,3 @@ use App\Http\Controllers\Api\V1\QuestionController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-Route::apiResource('questions', QuestionController::class)->only(['index']);

@@ -13,18 +13,27 @@ class SearchService implements ISearchService
 {
     private $request;
     private $responseHelper;
+    private $withRelations = [
+        'user.profile.user',
+        'user.roles',
+        'user',
+        'tags',
+        'state',
+        'status'
+    ];
 
     private function getListByTag(string $searchQuery)
     {
-        return Question::whereHas('tags', function (Builder $query) use ($searchQuery) {
+        return Question::with($this->withRelations)->whereHas('tags', function (Builder $query) use ($searchQuery) {
             $query->where('title', '=', $searchQuery);
-        })->paginate(config('question.perPage'));
+        })->withCount(['answers'])->paginate(config('question.perPage'));
     }
 
     private function getListByQuery(string $searchQuery)
     {
-        return Question::where('title', 'like', '%' . $searchQuery . '%')
+        return Question::with($this->withRelations)->where('title', 'like', '%' . $searchQuery . '%')
             ->orWhere('detail', 'like', '%' . $searchQuery . '%')
+            ->withCount(['answers'])
             ->paginate(config('question.perPage'));
     }
 
@@ -51,7 +60,7 @@ class SearchService implements ISearchService
 
         return $this->responseHelper->setViewData('themes.askme.pages.search.search', [
             'searchQuery' => $searchQuery,
-            'list' => $list
+            'list' => $list->appends($this->request->query())
         ]);
     }
 }

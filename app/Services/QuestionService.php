@@ -7,6 +7,7 @@ use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\Tag;
 use App\Models\QuestionStatus;
+use App\Models\User;
 use App\Enums\QuestionStatuses;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use App\Enums\QuestionFilter;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 
 class QuestionService implements IQuestionService
@@ -58,10 +60,10 @@ class QuestionService implements IQuestionService
 
     private function recentlyAnswered(): Builder
     {
-        return Question::with($this->withRelations)->selectRaw('questions.*')
-            ->leftJoin('answers', 'answers.question_id', '=', 'questions.id')
-            ->orderBy('answers.created_at', 'desc')
-            ->withCount(['answers']);
+        return Question::select('questions.*', DB::raw('MAX(answers.created_at) as max_created_at'))
+            ->join('answers', 'answers.question_id', '=', 'questions.id')
+            ->groupBy('questions.id')
+            ->orderBy('max_created_at', 'desc');
     }
 
     private function noAnswers(): Builder
@@ -96,13 +98,17 @@ class QuestionService implements IQuestionService
     {
         return $this->responseHelper->setViewData('themes.askme.pages.questions.edit', [
             'question' => $question,
-            'tags' => implode(',', $question->tags->pluck('title')->toArray())
+            'tags' => implode(',', $question->tags->pluck('title')->toArray()),
+            'statuses' => QuestionStatus::select(['id', 'title'])->get()
         ]);
     }
 
     public function update(Request $request, Question $question): Question
     {
-        $question->updateOrFail($request->validated());
+        $question->updateOrFail(array_merge(
+            $request->validated(),
+            ['status_id' => $request->get('status_id')]
+        ));
         $this->addTags($request, $question);
         return $question;
     }
@@ -147,5 +153,31 @@ class QuestionService implements IQuestionService
             default => Question::with($this->withRelations)->withCount(['answers'])
         };
         return $builder->paginate(config('question.perPage'));
+    }
+
+    public function getUserQuestions(Request $request, User $user): IResponseHelper
+    {
+        return $this->responseHelper->setViewData('themes.askme.pages.user-profile.questions', [
+            'questions' => $user->loadCount(['questions', 'answers'])
+                ->questions()
+                ->withCount(['answers'])
+                ->paginate(config('question.perPage'))
+                ->appends($request->query()),
+            'user' => $user
+        ]);
+    }
+
+    public function getUserQuestionThroughAnswers(Request $request, User $user): IResponseHelper
+    {
+        return $this->responseHelper->setViewData('themes.askme.pages.user-profile.questions', [
+            'questions' => Question::selectRaw('questions.*')
+                ->join('answers', 'answers.question_id', '=', 'questions.id')
+                ->groupby('questions.id')
+                ->where('answers.user_id', $user->id)
+                ->withCount(['answers'])
+                ->paginate(config('question.perPage'))
+                ->appends($request->query()),
+            'user' => $user->loadCount(['questions', 'answers'])
+        ]);
     }
 }

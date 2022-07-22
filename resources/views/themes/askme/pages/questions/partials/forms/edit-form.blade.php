@@ -20,6 +20,16 @@
                     @enderror
                 </p>
                 <p>
+                    <label>Status</label>
+                    <span class="styled-select">
+                        <select name="status_id">
+                            @foreach($statuses as $status)
+                            <option @if($status->id === $question->status_id) selected @endif value="{{$status->id}}">{{$status->title}}</option>
+                            @endforeach
+                        </select>
+                    </span>
+                </p>
+                <p>
                     <label>Tags</label>
                     <input type="text" class="input" name="tags" value="{{old('tags', $tags)}}" id="question_tags"
                            data-seperator=",">

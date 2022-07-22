@@ -5,7 +5,7 @@ import {Question} from "../models/Question";
 
 export class QuestionService {
     client: AxiosStatic;
-    url = '/api/v1/questions';
+    url = '/questions/getList';
 
     constructor() {
         this.client = axios;
@@ -24,6 +24,14 @@ export class QuestionService {
                     meta: obj.data.meta,
                     links: obj.data.links
                 };
+            });
+    }
+
+    addLike(questionId: number) {
+        let url = `/questions/${questionId}/add-like`;
+        return this.client.post(url)
+            .then((obj) => {
+                return obj.status;
             });
     }
 }

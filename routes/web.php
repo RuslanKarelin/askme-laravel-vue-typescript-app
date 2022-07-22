@@ -24,9 +24,12 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::resource('questions.answers', AnswerController::class)->only(['index']);
+Route::get('questions/getList', [QuestionController::class, 'getList'])->name('questions.getList');
 Route::get('questions/{question}', [QuestionController::class, 'show'])->name('questions.show');
-//Route::post('questions/query', [QuestionController::class, 'query'])->name('query');
 Route::get('users/{user}/profile', [UserController::class, 'show'])->name('users.profile.show');
+Route::get('users/{user}/profile/questions', [UserController::class, 'questions'])->name('users.profile.questions');
+Route::get('users/{user}/profile/answers', [UserController::class, 'questionsThroughAnswers'])->name('users.profile.answers');
 Route::get('search', SearchController::class)->name('search');
 
 Auth::routes();

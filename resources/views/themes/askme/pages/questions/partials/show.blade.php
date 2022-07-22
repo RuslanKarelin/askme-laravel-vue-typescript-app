@@ -14,17 +14,21 @@
             <p>{{$question->detail}}</p>
         </div>
         <div class="question-details">
-            <span class="question-answered question-answered-done"><i
+            <span class="question-answered @if($question->status->title === \App\Enums\QuestionStatuses::Resolved->value) question-answered-done @endif"><i
                         class="icon-ok"></i>{{$question->status->title}}</span>
         </div>
         <span class="question-date"><i class="icon-time"></i>{{$question->created_at->diffForHumans()}}</span>
         <span class="question-comment"><a href="#"><i
                         class="icon-comment"></i>{{$question->answers_count}} Answer</a></span>
         <span class="question-view"><i class="icon-user"></i>{{$question->state->views}} views</span>
-        <span class="single-question-vote-result">{{$question->likes_count}}</span>
-        <ul class="single-question-vote">
-            <li><a href="#" class="single-question-vote-up" title="Like"><i class="icon-thumbs-up"></i></a></li>
-        </ul>
+        <div class="like-component">
+            <like-component
+                    id="{{$question->id}}"
+                    type="question"
+                    is-user-auth="{{auth()->check()}}"
+                    count="{{$question->likes_count}}"
+            />
+        </div>
         <div class="clearfix"></div>
     </div>
 </article>
@@ -97,7 +101,7 @@
 
 <div class="about-author clearfix">
     <div class="author-image">
-        <a href="#" original-title="admin" class="tooltip-n">
+        <a href="{{route('users.profile.show', ['user' => $question->user->id])}}">
             @if (file_exists(storage_path('app/public/'.config('storage.avatars').$question->user->id.'/'.$question->user->profile->avatar)))
                 <img src="{{asset('storage/'.config('storage.avatars').$question->user->id.'/'.$question->user->profile->avatar)}}">
             @endif
@@ -107,4 +111,8 @@
         <h4>About {{$question->user->profile->fullName()}}</h4>
         {{$question->user->profile->about}}
     </div>
+</div>
+
+<div class="answers">
+    <answers-component is-user-auth="{{auth()->check()}}" question-id="{{$question->id}}"/>
 </div>

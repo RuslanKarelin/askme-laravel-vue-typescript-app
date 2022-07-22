@@ -26,8 +26,8 @@
                 <h2>User Stats</h2>
                 <div class="ul_list ul_list-icon-ok">
                     <ul>
-                        <li><i class="icon-question-sign"></i><a href="user_questions.html">Questions<span> ( <span>{{$user->questions_count}}</span> ) </span></a></li>
-                        <li><i class="icon-comment"></i><a href="user_answers.html">Answers<span> ( <span>{{$user->answers_count}}</span> ) </span></a></li>
+                        <li><i class="icon-question-sign"></i><a href="{{route('users.profile.questions', ['user' => $user])}}">Questions<span> ( <span>{{$user->questions_count}}</span> ) </span></a></li>
+                        <li><i class="icon-comment"></i><a href="{{route('users.profile.answers', ['user' => $user])}}">Answers<span> ( <span>{{$user->answers_count}}</span> ) </span></a></li>
                     </ul>
                 </div>
             </div>

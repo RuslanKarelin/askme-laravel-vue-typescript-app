@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Contracts\Services\IUserService;
+use App\Contracts\Services\IQuestionService;
 
 class UserController extends Controller
 {
     public function __construct(
-        private IUserService $userService
+        private IUserService $userService,
+        private IQuestionService $questionService
+
     ){}
 
     public function show(Request $request, User $user)
@@ -33,5 +36,15 @@ class UserController extends Controller
     {
         $this->userService->destroyUser($user);
         return response()->redirectToRoute('home');
+    }
+
+    public function questions(Request $request, User $user)
+    {
+        return $this->questionService->getUserQuestions($request, $user)->view();
+    }
+
+    public function questionsThroughAnswers(Request $request, User $user)
+    {
+        return $this->questionService->getUserQuestionThroughAnswers($request, $user)->view();
     }
 }

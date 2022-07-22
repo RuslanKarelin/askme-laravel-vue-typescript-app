@@ -1,4 +1,6 @@
 {
     "/js/app/components/questions-on-main.js": "/js/app/components/questions-on-main.js",
+    "/js/app/components/answers-list.js": "/js/app/components/answers-list.js",
+    "/js/app/components/like.js": "/js/app/components/like.js",
     "/css/app.css": "/css/app.css"
 }

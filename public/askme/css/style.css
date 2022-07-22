@@ -1621,6 +1621,7 @@ div[class*="slider_shadow"]:before, div[class^="header_shadow"] {
 .comment {
 	margin: 0 -20px;
 	border-bottom: 1px solid #dedede;
+	position: relative;
 }
 .children .comment {
 	margin: 0;
@@ -1700,7 +1701,7 @@ div[class*="slider_shadow"]:before, div[class^="header_shadow"] {
 	margin-right: 0;
 }
 .comment .question-vote-result {
-	margin-top: 10px;
+	margin-top: 7px;
 	margin-right: 20px;
 }
 .commentlist li .comment-meta {
@@ -5256,6 +5257,12 @@ html[xmlns] .slides {
 	border-color: #f5c6cb;
 }
 
+.alert-warning {
+	color: #856404;
+	background-color: #fff3cd;
+	border-color: #ffeeba;
+}
+
 .alert {
 	position: relative;
 	padding: .75rem 1.25rem;
@@ -5278,4 +5285,71 @@ html[xmlns] .slides {
 
 .question-list {
 	position: relative;
+}
+
+.can-update {
+	position: relative;
+	margin-right: 25px;
+}
+
+.icon-update {
+	position: absolute;
+	right: -25px;
+	top: 0;
+	z-index: 5;
+}
+
+.edit-area {
+	width: 100%;
+}
+
+.icon-destroy {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	z-index: 5;
+}
+
+.sub-comment-list {
+	padding: 20px 40px;
+	border-top: 1px solid #dedede;
+}
+
+.sub-comment {
+	position: relative;
+	padding: 10px 0;
+	border-bottom: 1px solid #dedede;
+}
+
+.sub-comment:last-child {
+	border-bottom: none;
+}
+
+.sub-comment .icon-destroy {
+	position: absolute;
+	right: 0;
+	z-index: 5;
+	bottom: 0;
+	top: auto;
+}
+
+.addCommentLink {
+	margin: 10px 0;
+	display: inline-block;
+}
+
+.sub-comment .date {
+	float: none !important;
+}
+.sub-comment .icon-update,
+.sub-comment .icon-destroy {
+	right: -20px;
+}
+
+.sub-comment .icon-update {
+	top: 0;
+}
+
+.sub-comment .icon-destroy {
+	top: 9px;
 }

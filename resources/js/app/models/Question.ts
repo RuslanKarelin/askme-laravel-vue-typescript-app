@@ -4,7 +4,7 @@ import {setDates} from "../helpers/DatesSetter";
 
 
 export class Question implements IQuestion {
-    id: string;
+    id: number;
     createdAt: string | DateTime | null;
     title: string | null;
     detail: string | null;
@@ -14,9 +14,5 @@ export class Question implements IQuestion {
     constructor(data: IQuestion) {
         Object.assign(this, data);
         setDates(this, ['created_at', 'updated_at']);
-    }
-
-    getField(fieldName: string): string | any {
-        return this[fieldName] || '';
     }
 }

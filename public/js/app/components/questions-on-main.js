@@ -2776,10 +2776,6 @@ function () {
     (0,_helpers_DatesSetter__WEBPACK_IMPORTED_MODULE_0__.setDates)(this, ['created_at', 'updated_at']);
   }
 
-  Question.prototype.getField = function (fieldName) {
-    return this[fieldName] || '';
-  };
-
   return Question;
 }();
 
@@ -2808,7 +2804,7 @@ var QuestionService =
 /** @class */
 function () {
   function QuestionService() {
-    this.url = '/api/v1/questions';
+    this.url = '/questions/getList';
     this.client = (axios__WEBPACK_IMPORTED_MODULE_0___default());
   }
 
@@ -2832,6 +2828,13 @@ function () {
         meta: obj.data.meta,
         links: obj.data.links
       };
+    });
+  };
+
+  QuestionService.prototype.addLike = function (questionId) {
+    var url = "/questions/".concat(questionId, "/add-like");
+    return this.client.post(url).then(function (obj) {
+      return obj.status;
     });
   };
 
@@ -2915,7 +2918,10 @@ var render = function render() {
   }, [_vm._v(_vm._s(_vm.detail))]), _vm._v(" "), _c("div", {
     staticClass: "question-details"
   }, [_c("span", {
-    staticClass: "question-answered question-answered-done"
+    staticClass: "question-answered",
+    "class": {
+      "question-answered-done": _vm.question.status.id === 2
+    }
   }, [_c("i", {
     staticClass: "icon-ok"
   }), _vm._v(_vm._s(_vm.question.status.title))])]), _vm._v(" "), _c("span", {

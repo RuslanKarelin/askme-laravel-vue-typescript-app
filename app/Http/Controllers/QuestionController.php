@@ -60,4 +60,18 @@ class QuestionController extends Controller
             return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
         }
     }
+
+    public function getList(Request $request)
+    {
+        try{
+            $list = $this->questionService->getList($request);
+            return $this->responseHelper->json(
+                Response::HTTP_OK,
+                QuestionResource::collection($list)->response()->getData(true),
+                true
+            );
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
+        }
+    }
 }

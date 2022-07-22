@@ -11,7 +11,7 @@
             <div class="clearfix"></div>
             <p class="question-desc">{{detail}}</p>
             <div class="question-details">
-                <span class="question-answered question-answered-done"><i class="icon-ok"></i>{{question.status.title}}</span>
+                <span class="question-answered" :class="{'question-answered-done': question.status.id === 2}"><i class="icon-ok"></i>{{question.status.title}}</span>
             </div>
             <span class="question-date"><i class="icon-time"></i>{{question.created_at.toRelative()}}</span>
             <span class="question-comment"><a href="#"><i class="icon-comment"></i>{{question.answers_count}} Answer</a></span>

@@ -46,7 +46,8 @@ class QuestionTest extends TestCase
             route('questions.update', ['question' => $this->question->id]),
             [
                 'title' => 'test',
-                'detail' => 'test'
+                'detail' => 'test',
+                'status_id' => $this->question->status_id
             ]
         );
         $this->assertDatabaseHas('questions', [
@@ -160,7 +161,8 @@ class QuestionTest extends TestCase
             [
                 'title' => 'test',
                 'detail' => 'test',
-                'tags' => 'php,python'
+                'tags' => 'php,python',
+                'status_id' => $this->question->status_id
             ]
         );
         $this->assertDatabaseCount('tags', 2);
@@ -180,7 +182,7 @@ class QuestionTest extends TestCase
             route('questions.update', ['question' => $this->question->id]),
             [
                 'title' => 'test',
-                'detail' => 'test'
+                'detail' => 'test',
             ]
         );
         $this->assertDatabaseMissing('questions', [

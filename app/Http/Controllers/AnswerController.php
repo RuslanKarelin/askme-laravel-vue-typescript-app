@@ -18,6 +18,20 @@ class AnswerController extends Controller
         private IResponseHelper $responseHelper
     ){}
 
+    public function index(Request $request, Question $question)
+    {
+        try{
+            $list = $this->answerService->getList($request, $question);
+            return $this->responseHelper->json(
+                Response::HTTP_OK,
+                AnswerResource::collection($list)->response()->getData(true),
+                true
+            );
+        } catch (\Exception $e) {
+            return $this->responseHelper->jsonError($e->getCode(), $e->getMessage());
+        }
+    }
+
     public function store(AnswerRequest $request, Question $question)
     {
         try{

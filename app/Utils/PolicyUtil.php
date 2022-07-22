@@ -28,15 +28,21 @@ class PolicyUtil
         $routeName = $this->request->route()->getName();
 
         if (in_array($routeName, $this->actions)) {
-
             $routeNameArray = explode('.', $routeName);
             $actionName = array_pop($routeNameArray);
-            $parameterName = Str::singular(array_shift($routeNameArray));
+            $parameterName = $routeNameArray[count($routeNameArray)-1];
+            if ($routeNameArray[0] === 'users') {
+                $parameterName = $routeNameArray[0];
+            }
+            $parameterName = Str::singular($parameterName);
             $routeParameters = $this->request->route()->parameters;
 
-            if ($actionName && $parameterName && array_key_exists($parameterName, $routeParameters)) {
-                if ($this->request->user()->cannot($actionName, $routeParameters[$parameterName])) return true;
-            }
+            if (
+                $actionName &&
+                $parameterName &&
+                array_key_exists($parameterName, $routeParameters) &&
+                $this->request->user()->cannot($actionName, $routeParameters[$parameterName])
+            ) return true;
         }
 
         return false;
