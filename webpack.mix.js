@@ -16,11 +16,7 @@ mix.webpackConfig({
  |
  */
 
-/*mix.js('resources/js/app.js', 'public/js')
-    .vue()
-    .sass('resources/sass/app.scss', 'public/css');*/
 
-mix.sass('resources/sass/app.scss', 'public/css');
 mix.ts('resources/js/app/components/questions/on-main/main.ts', 'public/js/app/components/questions-on-main.js')
     .vue();
 mix.ts('resources/js/app/components/answers/main.ts', 'public/js/app/components/answers-list.js')

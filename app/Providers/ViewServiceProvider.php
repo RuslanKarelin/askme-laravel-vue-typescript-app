@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\View\Composers\StatisticComposer;
+use App\Helpers\PageHelper;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -29,5 +30,9 @@ class ViewServiceProvider extends ServiceProvider
             'themes.askme.partials.right-sidebar',
             StatisticComposer::class
         );
+
+        View::composer('*', function ($view) {
+            $view->with('pageHelper', app(PageHelper::class));
+        });
     }
 }

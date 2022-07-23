@@ -4,4 +4,8 @@
  * Released under the MIT License.
  */
 
-/*! https://mths.be/he v1.2.0 by @mathias | MIT license */
+/**
+  * vue-class-component v7.2.6
+  * (c) 2015-present Evan You
+  * @license MIT
+  */

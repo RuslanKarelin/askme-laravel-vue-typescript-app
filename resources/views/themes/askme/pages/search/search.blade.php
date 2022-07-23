@@ -1,11 +1,7 @@
 @extends('layouts.askme')
 
-@section('title')
-    'Search by: '.$searchQuery
-@endsection
-
 @section('after-header-block')
-    @include('themes.askme.partials.after-header-block', ['title' => 'Search by: '.$searchQuery])
+    @include('themes.askme.partials.after-header-block')
 @endsection
 
 @section('content')

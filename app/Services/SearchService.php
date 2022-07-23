@@ -7,16 +7,17 @@ use Illuminate\Http\Request;
 use App\Contracts\Helpers\Response\IResponseHelper;
 use Illuminate\Database\Eloquent\Builder;
 use App\Contracts\Services\ISearchService;
+use App\Helpers\PageHelper;
 
 
 class SearchService implements ISearchService
 {
     private $request;
     private $responseHelper;
+    private $pageHelper;
     private $withRelations = [
         'user.profile.user',
         'user.roles',
-        'user',
         'tags',
         'state',
         'status'
@@ -24,6 +25,9 @@ class SearchService implements ISearchService
 
     private function getListByTag(string $searchQuery)
     {
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('Search by tag: ' . $searchQuery)
+            ->setPageTitle('Search by tag: ' . $searchQuery);
         return Question::with($this->withRelations)->whereHas('tags', function (Builder $query) use ($searchQuery) {
             $query->where('title', '=', $searchQuery);
         })->withCount(['answers'])->paginate(config('question.perPage'));
@@ -31,6 +35,9 @@ class SearchService implements ISearchService
 
     private function getListByQuery(string $searchQuery)
     {
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('Search by query: ' . $searchQuery)
+            ->setPageTitle('Search by query: ' . $searchQuery);
         return Question::with($this->withRelations)->where('title', 'like', '%' . $searchQuery . '%')
             ->orWhere('detail', 'like', '%' . $searchQuery . '%')
             ->withCount(['answers'])
@@ -41,6 +48,7 @@ class SearchService implements ISearchService
     {
         $this->request = app(Request::class);
         $this->responseHelper = app(IResponseHelper::class);
+        $this->pageHelper = app(PageHelper::class);
     }
 
     public function handle(): IResponseHelper

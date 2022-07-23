@@ -9,5 +9,5 @@
         {{ $questions->links('themes.askme.pagination.custom') }}
     </div>
 @else
-    Nothing was found for your query
+    <div class="col-md-12">Nothing was found for your query</div>
 @endif

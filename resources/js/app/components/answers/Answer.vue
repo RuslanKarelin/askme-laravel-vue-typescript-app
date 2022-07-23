@@ -74,10 +74,6 @@
         isEdit = false;
         isLoad = false;
 
-        created() {
-            console.log(this.answer)
-        }
-
         form = {
             detail: ''
         };

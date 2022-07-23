@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Helpers\PageHelper;
 
 class LoginController extends Controller
 {
@@ -23,7 +24,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-
+    private $pageHelper;
     /**
      * Get the login username to be used by the controller.
      *
@@ -43,10 +44,14 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->redirectTo = url()->previous();
+        $this->pageHelper = app(PageHelper::class);
     }
 
     public function showLoginForm()
     {
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('Login')
+            ->setPageTitle('Login');
         return view('themes.askme.pages.auth.login');
     }
 

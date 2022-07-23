@@ -11,7 +11,7 @@ class UserPolicy
 
     private function checkingForTheOwnerOrAdministrator(User $currentUser, User $user)
     {
-        return ($currentUser->id === $user->id) || $currentUser->isAdministrator();
+        return ($currentUser->id === $user->id) || $currentUser->is_administrator;
     }
 
     public function edit(User $currentUser, User $user)

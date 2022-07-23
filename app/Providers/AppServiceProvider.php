@@ -19,6 +19,7 @@ use App\Services\StatisticService;
 use App\Contracts\Services\IStatisticService;
 use App\Contracts\Helpers\Response\IResponseHelper;
 use App\Helpers\Response\ResponseHelper;
+use App\Helpers\PageHelper;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -69,6 +70,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ISearchService::class, function ($app) {
             return new SearchService();
+        });
+
+        $this->app->singleton(PageHelper::class, function ($app) {
+            return new PageHelper();
         });
     }
 }

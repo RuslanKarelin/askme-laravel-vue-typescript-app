@@ -18,8 +18,8 @@
                         class="icon-ok"></i>{{$question->status->title}}</span>
         </div>
         <span class="question-date"><i class="icon-time"></i>{{$question->created_at->diffForHumans()}}</span>
-        <span class="question-comment"><a href="#"><i
-                        class="icon-comment"></i>{{$question->answers_count}} Answer</a></span>
+        <span class="question-comment"><i
+                        class="icon-comment"></i>{{$question->answers_count}} Answer</span>
         <span class="question-view"><i class="icon-user"></i>{{$question->state->views}} views</span>
         <div class="like-component">
             <like-component
@@ -112,7 +112,9 @@
         {{$question->user->profile->about}}
     </div>
 </div>
-
+<script>
+    xxx = 'hello';
+</script>
 <div class="answers">
     <answers-component is-user-auth="{{auth()->check()}}" question-id="{{$question->id}}"/>
 </div>

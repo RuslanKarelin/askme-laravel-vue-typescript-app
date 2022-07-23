@@ -12,7 +12,7 @@ class QuestionPolicy
 
     private function checkingForTheOwnerOrAdministrator(User $user, Question $question)
     {
-        return ($user->id === $question->user_id) || $user->isAdministrator();
+        return ($user->id === $question->user_id) || $user->is_administrator;
     }
 
     public function edit(User $user, Question $question)

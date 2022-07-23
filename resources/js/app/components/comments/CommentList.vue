@@ -1,6 +1,6 @@
 <template>
-    <div class="sub-comment-list">
-        <div v-if="comments.length">
+    <div v-if="comments.length || isUserAuth" class="sub-comment-list">
+        <div>
             <comment v-for="(comment, index) in comments"
                      :key="'comment' + comment.id"
                      :answerId="answerId"
@@ -8,7 +8,6 @@
                      :answerIndex="answerIndex"
                      :index="index"
             />
-
         </div>
         <comment-form v-if="isUserAuth" :answerId="answerId" :answerIndex="answerIndex" />
     </div>

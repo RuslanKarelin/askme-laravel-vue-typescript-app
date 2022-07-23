@@ -8,25 +8,19 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
-    <title>Ask me – @yield('title')</title>
-    <meta name="description" content="Ask me Responsive Questions and Answers Template">
-    <meta name="author" content="2code.info">
+    <title>{{$pageHelper->pageTitle()}} - Ask me</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="{{asset('/askme/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('/askme/css/skins/blue.css')}}">
     <link rel="stylesheet" href="{{asset('/askme/css/responsive.css')}}">
     <link rel="shortcut icon" href="{{asset('/askme/images/favicon.png')}}">
     @stack('css')
-
 </head>
 <body>
-
 <div class="loader">
     <div class="loader_html"></div>
 </div>
-
 <div id="wrap" class="grid_1200">
-
     <div class="login-panel">
         <section class="container">
             <div class="row">
@@ -191,10 +185,10 @@
             </div>
             <nav class="navigation">
                 <ul>
-                    <li class="current_page_item"><a href="{{route('home')}}">Home</a></li>
-                    <li class="ask_question"><a href="{{route('questions.create')}}">Ask Question</a></li>
+                    <li class="@if($pageHelper->isActiveLink('home')) current_page_item @endif"><a href="{{route('home')}}">Home</a></li>
+                    <li class="ask_question @if($pageHelper->isActiveLink('questions.create')) current_page_item @endif"><a href="{{route('questions.create')}}">Ask Question</a></li>
                     @auth
-                        <li><a href="{{route('users.profile.show', ['user' => auth()->user()])}}">User</a></li>
+                        <li class="@if($pageHelper->isActiveLink('users.profile.show')) current_page_item @endif"><a href="{{route('users.profile.show', ['user' => auth()->user()])}}">User</a></li>
                     @endauth
                 </ul>
             </nav>

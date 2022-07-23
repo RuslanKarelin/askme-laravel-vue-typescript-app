@@ -79,10 +79,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Question::class, 'question_like', 'user_id', 'question_id');
     }
 
-    public function isAdministrator()
+    public function getIsAdministratorAttribute()
     {
-        return $this->roles()->where(function (Builder $query) {
-            return $query->where('title', Roles::Admin);
-        })->limit(1)->get()->isNotEmpty();
+        return $this->roles->pluck('title')->contains(Roles::Admin->value);
     }
 }

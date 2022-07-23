@@ -12,7 +12,7 @@ class AnswerPolicy
 
     private function checkingForTheOwnerOrAdministrator(User $user, Answer $answer)
     {
-        return ($user->id === $answer->user_id) || $user->isAdministrator();
+        return ($user->id === $answer->user_id) || $user->is_administrator;
     }
 
     public function update(User $user, Answer $answer)

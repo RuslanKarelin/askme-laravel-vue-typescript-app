@@ -2,7 +2,6 @@
     <div class="commentlistWrap">
         <div v-if="total" id="commentlist" class="page-content">
             <div class="boxedtitle page-title"><h2>Answers ( <span class="color">{{total}}</span> )</h2></div>
-
             <loader :show="isLoad"/>
             <ol class="commentlist clearfix">
                 <answer v-for="(answer, index) in answerList"
@@ -13,7 +12,6 @@
                         :isUserAuth="isUserAuth"
                 />
             </ol>
-
         </div>
         <a v-if="lastPage > currentPage" @click.prevent="loadAnswers" href="#" class="load-questions"><i
                 class="icon-refresh"></i>Load More Answers</a>
@@ -77,10 +75,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .commentlistWrap {
-        margin-top: 30px;
-        position: relative;
-    }
-</style>

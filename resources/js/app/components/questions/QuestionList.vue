@@ -13,6 +13,7 @@
     import {Question as QuestionModel} from '../../models/Question';
     import Question from './Question.vue';
     import Loader from '../Loader.vue';
+    import {DataFromResponse} from '../../types/DataFromResponse'
 
     @Component({
         components: {
@@ -25,7 +26,14 @@
 
         questionService: QuestionService;
         questionList: QuestionModel[] = [];
-        dataFromResponse: { [key: string]: any } = {};
+        dataFromResponse: DataFromResponse = {
+            meta: {
+                last_page: 0
+            },
+            status: true,
+            data: []
+        };
+
         currentPage = 1;
         isLoad = false;
 
@@ -35,7 +43,7 @@
         }
 
         get lastPage() {
-            return this.dataFromResponse?.meta?.last_page
+            return this.dataFromResponse.meta.last_page
         }
 
         get query() {

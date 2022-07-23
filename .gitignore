@@ -1,3 +1,5 @@
+!/storage/app/public/avatars/admin.jpeg
+!/storage/app/public/avatars/avatar.png
 /node_modules
 /public/build
 /public/hot
@@ -7,7 +9,9 @@
 /data
 /data_test
 .env
+.env.testing
 .env.backup
+.editorconfig
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -16,5 +20,8 @@ npm-debug.log
 yarn-error.log
 supervisord.pid
 supervisord.log
+.phpunit.result.cache
+.styleci.yml
+.gitattributes
 /.idea
 /.vscode

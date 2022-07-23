@@ -18,15 +18,16 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Enums\QuestionFilter;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\PageHelper;
 
 
 class QuestionService implements IQuestionService
 {
     private $responseHelper;
+    private $pageHelper;
     private $withRelations = [
         'user.profile.user',
         'user.roles',
-        'user',
         'tags',
         'state',
         'status'
@@ -55,15 +56,22 @@ class QuestionService implements IQuestionService
 
     private function mostResponses(): Builder
     {
-        return Question::with($this->withRelations)->withCount(['answers'])->orderBy('answers_count', 'desc');
+        return Question::with($this->withRelations)
+            ->withCount(['answers'])
+            ->orderBy('answers_count', 'desc')
+            ->orderBy('questions.id', 'asc');
     }
 
     private function recentlyAnswered(): Builder
     {
         return Question::select('questions.*', DB::raw('MAX(answers.created_at) as max_created_at'))
+            ->with($this->withRelations)
+            ->distinct()
             ->join('answers', 'answers.question_id', '=', 'questions.id')
             ->groupBy('questions.id')
-            ->orderBy('max_created_at', 'desc');
+            ->orderBy('max_created_at', 'desc')
+            ->orderBy('questions.id', 'asc')
+            ->withCount(['answers']);
     }
 
     private function noAnswers(): Builder
@@ -74,10 +82,14 @@ class QuestionService implements IQuestionService
     public function __construct()
     {
         $this->responseHelper = app(IResponseHelper::class);
+        $this->pageHelper = app(PageHelper::class);
     }
 
     public function create(Request $request): IResponseHelper
     {
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('Create Question')
+            ->setPageTitle('Create Question');
         return $this->responseHelper->setViewData('themes.askme.pages.questions.create');
     }
 
@@ -96,6 +108,10 @@ class QuestionService implements IQuestionService
 
     public function edit(Request $request, Question $question): IResponseHelper
     {
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('Edit Question', route('questions.edit', ['question' => $question->id]))
+            ->addBreadcrumb($question->title)
+            ->setPageTitle('Edit Question: ' . $question->title);
         return $this->responseHelper->setViewData('themes.askme.pages.questions.edit', [
             'question' => $question,
             'tags' => implode(',', $question->tags->pluck('title')->toArray()),
@@ -115,6 +131,9 @@ class QuestionService implements IQuestionService
 
     public function show(Request $request, Question $question): IResponseHelper
     {
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb($question->title)
+            ->setPageTitle($question->title);
         return $this->responseHelper->setViewData('themes.askme.pages.questions.show', [
             'question' => $question->load(['status', 'state', 'user.profile', 'tags'])->loadCount(['likes', 'answers'])
         ]);
@@ -157,6 +176,11 @@ class QuestionService implements IQuestionService
 
     public function getUserQuestions(Request $request, User $user): IResponseHelper
     {
+        $userFullName = $user->profile->fullName();
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('User Profile', route('users.profile.show', ['user' => $user->id]))
+            ->addBreadcrumb('User questions')
+            ->setPageTitle('User questions: ' . $userFullName);
         return $this->responseHelper->setViewData('themes.askme.pages.user-profile.questions', [
             'questions' => $user->loadCount(['questions', 'answers'])
                 ->questions()
@@ -169,6 +193,11 @@ class QuestionService implements IQuestionService
 
     public function getUserQuestionThroughAnswers(Request $request, User $user): IResponseHelper
     {
+        $userFullName = $user->profile->fullName();
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('User Profile', route('users.profile.show', ['user' => $user->id]))
+            ->addBreadcrumb('Questions answered by the user')
+            ->setPageTitle('Questions answered by the user: ' . $userFullName);
         return $this->responseHelper->setViewData('themes.askme.pages.user-profile.questions', [
             'questions' => Question::selectRaw('questions.*')
                 ->join('answers', 'answers.question_id', '=', 'questions.id')

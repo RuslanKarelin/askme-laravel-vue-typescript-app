@@ -8,13 +8,16 @@
     </div>
 </div>
 
+@if(!empty($tags))
 <div class="widget widget_tag_cloud">
     <h3 class="widget_title">Tags</h3>
     @foreach($tags as $tag)
         <a href="{{route('search', ['tag' => $tag])}}">{{$tag}}</a>
     @endforeach
 </div>
+@endif
 
+@if($last_questions->isNotEmpty())
 <div class="widget">
     <h3 class="widget_title">Recent Questions</h3>
     <ul class="related-posts">
@@ -27,3 +30,4 @@
         @endforeach
     </ul>
 </div>
+@endif

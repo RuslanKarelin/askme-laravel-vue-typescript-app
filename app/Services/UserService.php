@@ -9,17 +9,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Contracts\Services\IFileService;
 use App\Contracts\Helpers\Response\IResponseHelper;
+use App\Helpers\PageHelper;
 
 
 class UserService implements IUserService
 {
     private $fileService;
     private $responseHelper;
+    private $pageHelper;
 
     public function __construct()
     {
         $this->fileService = app(IFileService::class);
         $this->responseHelper = app(IResponseHelper::class);
+        $this->pageHelper = app(PageHelper::class);
     }
 
     public function updateUser(Request $request, User $user): User
@@ -78,6 +81,11 @@ class UserService implements IUserService
 
     public function edit(Request $request, User $user): IResponseHelper
     {
+        $userFullName = $user->profile->fullName();
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('Edit User', route('users.profile.edit', ['user' => $user->id]))
+            ->addBreadcrumb($userFullName)
+            ->setPageTitle('Edit User: ' . $userFullName);
         return $this->responseHelper->setViewData('themes.askme.pages.user-profile.edit', [
             'user' => $user->load(['profile'])
         ]);
@@ -85,6 +93,11 @@ class UserService implements IUserService
 
     public function show(Request $request, User $user): IResponseHelper
     {
+        $userFullName = $user->profile->fullName();
+        $this->pageHelper->setDefaultBreadcrumb()
+            ->addBreadcrumb('User Profile', route('users.profile.show', ['user' => $user->id]))
+            ->addBreadcrumb($userFullName)
+            ->setPageTitle('User Profile: ' . $userFullName);
         return $this->responseHelper->setViewData('themes.askme.pages.user-profile.show', [
             'user' => $user->load(['profile'])->loadCount(['questions', 'answers'])
         ]);

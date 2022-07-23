@@ -1,5 +1,10 @@
 export interface Meta {
-    total: number;
-    last_page: number;
-    [key: string]: any
+    current_page?: number;
+    from?: number;
+    last_page?: number;
+    links?: {url: string|null; label: string; active: false, path: string;}[]
+    path?: string;
+    per_page?: number;
+    to?: number;
+    total?: number;
 }

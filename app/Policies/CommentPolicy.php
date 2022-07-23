@@ -12,7 +12,7 @@ class CommentPolicy
 
     private function checkingForTheOwnerOrAdministrator(User $user, Comment $comment)
     {
-        return ($user->id === $comment->user_id) || $user->isAdministrator();
+        return ($user->id === $comment->user_id) || $user->is_administrator;
     }
 
     public function update(User $user, Comment $comment)

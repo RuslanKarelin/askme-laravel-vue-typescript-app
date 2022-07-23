@@ -1,11 +1,7 @@
 @extends('layouts.askme')
 
-@section('title')
-    {{$question->title}}
-@endsection
-
 @section('after-header-block')
-    @include('themes.askme.partials.after-header-block', ['title' => $question->title])
+    @include('themes.askme.partials.after-header-block')
 @endsection
 
 @section('content')

@@ -28,7 +28,9 @@ export class AnswerService {
                             return answer;
                         }
                     ),
-                    meta: obj.data.meta
+                    meta: obj.data.meta,
+                    links: obj.data.links,
+                    status: obj.data.status
                 };
             });
     }

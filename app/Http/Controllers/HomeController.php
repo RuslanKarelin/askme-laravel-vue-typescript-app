@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Helpers\PageHelper;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    private $pageHelper;
+
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->pageHelper = app(PageHelper::class);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-        return view('themes.askme.pages.home');
+        $this->pageHelper->setPageTitle('Home');
+        return view('themes.askme.pages.home.home');
     }
 }

@@ -5,7 +5,7 @@ import store from '../../store';
 Vue.use(Vuelidate)
 Vue.component('answers-component', require('./Answers.vue').default);
 
-new Vue({
+export default new Vue({
     store,
     el: '.answers',
 });

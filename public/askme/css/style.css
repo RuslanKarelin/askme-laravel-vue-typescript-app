@@ -5297,6 +5297,7 @@ html[xmlns] .slides {
 	right: -25px;
 	top: 0;
 	z-index: 5;
+	cursor: pointer;
 }
 
 .edit-area {
@@ -5308,6 +5309,7 @@ html[xmlns] .slides {
 	right: 20px;
 	top: 20px;
 	z-index: 5;
+	cursor: pointer;
 }
 
 .sub-comment-list {
@@ -5352,4 +5354,9 @@ html[xmlns] .slides {
 
 .sub-comment .icon-destroy {
 	top: 9px;
+}
+
+.commentlistWrap {
+	margin-top: 30px;
+	position: relative;
 }

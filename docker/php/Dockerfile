@@ -56,7 +56,6 @@ RUN pecl channel-update pecl.php.net
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-#COPY ./laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf
 COPY ./supervisor.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

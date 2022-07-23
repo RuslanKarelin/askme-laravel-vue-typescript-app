@@ -1,11 +1,7 @@
 @extends('layouts.askme')
 
-@section('title')
-    Edit Profile
-@endsection
-
 @section('after-header-block')
-    @include('themes.askme.partials.after-header-block', ['title' => 'Edit Profile'])
+    @include('themes.askme.partials.after-header-block')
 @endsection
 
 @section('content')

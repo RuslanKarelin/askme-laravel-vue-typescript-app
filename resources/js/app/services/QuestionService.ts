@@ -22,7 +22,8 @@ export class QuestionService {
                 return {
                     data: (obj.data.data || []).map((item: IQuestion) => new Question(item)),
                     meta: obj.data.meta,
-                    links: obj.data.links
+                    links: obj.data.links,
+                    status: obj.data.status
                 };
             });
     }
